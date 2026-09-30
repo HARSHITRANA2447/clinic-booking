@@ -1,0 +1,19 @@
+# Backend
+backend/clinic-backend/target/
+backend/clinic-backend/.env
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# Environment files
+*.env
+
+# IDE
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db

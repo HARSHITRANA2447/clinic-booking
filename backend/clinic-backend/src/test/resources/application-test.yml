@@ -1,0 +1,8 @@
+app:
+  jwt:
+    secret: test-secret-key-for-junit-tests-12345678901234567890
+    expiry-minutes: 120
+
+  cors:
+    allowed-origins:
+      - http://localhost:5173
