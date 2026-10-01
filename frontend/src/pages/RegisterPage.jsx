@@ -36,7 +36,9 @@ export default function RegisterPage() {
         setError('')
 
         if (!/^[6-9]\d{9}$/.test(form.phone)) {
-            return setError('Enter a valid 10-digit mobile number first')
+            return setError(
+                'Enter a valid 10-digit mobile number first'
+            )
         }
 
         setSendingOtp(true)
@@ -59,20 +61,38 @@ export default function RegisterPage() {
         e.preventDefault()
         setError('')
 
-        if (!form.name.trim())
+        // 1. Name validation
+        if (!form.name.trim()) {
             return setError('Enter your name')
+        }
 
-        if (!/^[6-9]\d{9}$/.test(form.phone))
-            return setError('Enter a valid 10-digit mobile number')
+        // 2. Phone validation
+        if (!/^[6-9]\d{9}$/.test(form.phone)) {
+            return setError(
+                'Enter a valid 10-digit mobile number'
+            )
+        }
 
-        if (!otpCode)
-            return setError('Enter the verification code sent to your phone')
+        // 3. Password validation
+        if (form.password.length < 8) {
+            return setError(
+                'Password must be at least 8 characters'
+            )
+        }
 
-        if (form.password.length < 8)
-            return setError('Password must be at least 8 characters')
+        // 4. Consent validation
+        if (!form.consent) {
+            return setError(
+                'Please accept the consent to continue'
+            )
+        }
 
-        if (!form.consent)
-            return setError('Please accept the consent to continue')
+        // 5. OTP validation - MUST BE LAST
+        if (!otpCode) {
+            return setError(
+                'Enter the verification code sent to your phone'
+            )
+        }
 
         setBusy(true)
 
@@ -84,7 +104,6 @@ export default function RegisterPage() {
             })
 
             navigate('/', { replace: true })
-
         } catch (err) {
             setError(errorMessage(err))
         } finally {
@@ -135,7 +154,9 @@ export default function RegisterPage() {
             {otpSent && (
                 <input
                     value={otpCode}
-                    onChange={(e) => setOtpCode(e.target.value.trim())}
+                    onChange={(e) =>
+                        setOtpCode(e.target.value.trim())
+                    }
                     inputMode="numeric"
                     maxLength={6}
                     placeholder="6-digit verification code"
@@ -159,6 +180,7 @@ export default function RegisterPage() {
                 className={input}
             />
 
+            {/* Consent */}
             <label className="flex items-start gap-2 text-sm text-gray-700">
                 <input
                     type="checkbox"
@@ -171,12 +193,14 @@ export default function RegisterPage() {
                 to manage my appointments.
             </label>
 
+            {/* Error message */}
             {error && (
                 <p className="text-sm text-red-700">
                     {error}
                 </p>
             )}
 
+            {/* Register button */}
             <button
                 disabled={busy}
                 className="w-full rounded bg-blue-700 p-2 font-medium text-white disabled:opacity-60"
