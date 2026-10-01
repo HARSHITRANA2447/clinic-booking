@@ -55,12 +55,23 @@ CREATE TABLE users (
                        id BIGSERIAL PRIMARY KEY,
                        phone VARCHAR(15) NOT NULL UNIQUE,
                        password_hash VARCHAR(100) NOT NULL,
-                       role VARCHAR(15) NOT NULL
-                           CHECK (role IN ('PATIENT','CLINIC_STAFF','ADMIN')),
+                       role VARCHAR(15) NOT NULL CHECK (role IN ('PATIENT','CLINIC_STAFF','ADMIN')),
                        patient_id BIGINT UNIQUE REFERENCES patients(id),
                        clinic_id BIGINT REFERENCES clinics(id),
+                       phone_verified BOOLEAN NOT NULL DEFAULT false,
                        created_at TIMESTAMP NOT NULL DEFAULT now()
 );
+CREATE TABLE otp_codes (
+                           id BIGSERIAL PRIMARY KEY,
+                           phone VARCHAR(15) NOT NULL,
+                           code_hash VARCHAR(100) NOT NULL,
+                           purpose VARCHAR(20) NOT NULL,
+                           expires_at TIMESTAMP NOT NULL,
+                           consumed BOOLEAN NOT NULL DEFAULT false,
+                           attempts INT NOT NULL DEFAULT 0,
+                           created_at TIMESTAMP NOT NULL DEFAULT now()
+);
+CREATE INDEX idx_otp_phone ON otp_codes(phone, purpose, consumed);
 
 CREATE INDEX idx_doctors_spec
     ON doctors(specialization);

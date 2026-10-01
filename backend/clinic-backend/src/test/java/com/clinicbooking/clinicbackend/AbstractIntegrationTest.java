@@ -37,7 +37,7 @@ public abstract class AbstractIntegrationTest {
 
     @BeforeEach
     void cleanDatabase() {
-        jdbc.execute("TRUNCATE bookings, slots, users, patients, doctors, clinics RESTART IDENTITY CASCADE");
+        jdbc.execute("TRUNCATE bookings, slots, otp_codes, users, patients, doctors, clinics RESTART IDENTITY CASCADE");
     }
 
     // ---------- fixtures (plain SQL, so they commit like real data) ----------
